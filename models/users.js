@@ -32,7 +32,8 @@ const userSchema = mongoose.Schema({
     phonePerso:String,
     phonePro: String,
     birthday: String,
-    tagsPerso: [tagSchema]
+    tagsPerso: [tagSchema],
+    contacts: [contactSchema]
 });
 
 const User = mongoose.model('users', userSchema);
