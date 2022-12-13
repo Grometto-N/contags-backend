@@ -15,22 +15,32 @@ const contactedTimesCounterSchema = mongoose.Schema({
 const contactSchema = mongoose.Schema({
     name:String,
     firstName: String,
-    emailPro: String,
-    emailPerso: String,
-    phonePerso:String,
-    phonePro: String,
+    emails: [emailSchema],
+    phones:[phoneSchema],
     birthday: String,
     tags: [tagSchema],
     contactedTimesCounter: [contactedTimesCounterSchema]
 });
 
+const phoneSchema = mongoose.Schema({
+    type : String,
+    number: String,
+    country: String,
+    areaCode : String,
+});
+
+const emailSchema = mongoose.Schema({
+    type : String,
+    email: String,
+});
+
+
 const userSchema = mongoose.Schema({
     name:String,
     firstName: String,
-    emailPro: String,
-    emailPerso: String,
-    phonePerso:String,
-    phonePro: String,
+    emailPrincipal : String,
+    emails : [emailSchema],
+    phones:[phoneSchema],
     birthday: String,
     tagsPerso: [tagSchema],
     contacts: [contactSchema]
