@@ -12,6 +12,19 @@ const contactedTimesCounterSchema = mongoose.Schema({
     emailCounter: Number,
 });
 
+const emailSchema = mongoose.Schema({
+    type : String,
+    email: String,
+});
+
+const phoneSchema = mongoose.Schema({
+    type : String,
+    number: String,
+    country: String,
+    areaCode : String,
+});
+
+
 const contactSchema = mongoose.Schema({
     name:String,
     firstName: String,
@@ -22,23 +35,12 @@ const contactSchema = mongoose.Schema({
     contactedTimesCounter: [contactedTimesCounterSchema]
 });
 
-const phoneSchema = mongoose.Schema({
-    type : String,
-    number: String,
-    country: String,
-    areaCode : String,
-});
-
-const emailSchema = mongoose.Schema({
-    type : String,
-    email: String,
-});
 
 
 const userSchema = mongoose.Schema({
     name:String,
     firstName: String,
-    emailPrincipal : String,
+    emailMain : String,
     emails : [emailSchema],
     phones:[phoneSchema],
     birthday: String,
