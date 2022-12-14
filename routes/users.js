@@ -13,31 +13,31 @@ router.get('/', function(req, res, next) {
   .then(data => res.json({result : true, data}))
 });
 
-//j'enregistre un nouvel utilisateur
-router.post("/signup", (req, res) => {
-  if (!checkBody(req.body, ["emailPerso", "password"])) {
-    res.json({ result: false, error: "Missing or empty fields" });
-    return;
-  }
+//j'enregistre un nouveau contact
+router.post("/addContact", (req, res) => {
 
-  User.findOne({ emailPerso: req.body.emailPerso }).then((data) => {
+  User.findOne({ token: req.body.token }).then((data) => {
     if (data === null) {
-      const hash = bcrypt.hashSync(req.body.password, 10);
-
-      const newUser = new User({
+     
+      let Contacts = []
+      const newContact = new Contacts({
+        name: req.body.name,
+        firstName: req.body.firstName,
+        emailPro: req.body.emailPro,
         emailPerso: req.body.emailPerso,
-        password: hash,
-        token: uid2(32),
+        phonePerso: req.body.phonePerso,
+        phonePro: req.body.phonePro,
+        birthday: req.body.birthday,
       });
 
-      newUser.save().then((newDoc) => {
+      newContact.save().then((newDoc) => {
         res.json({ result: true, token: newDoc.token });
       });
     } else {
-      res.json({ result: false, error: "User already exists" });
+      res.json({ result: false, error: "T'as une erreur mon grand !" });
     }
   });
-});
+}); 
 
 
 //route pour ajouter des informations à un utilisateur

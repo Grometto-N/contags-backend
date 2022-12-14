@@ -1,23 +1,23 @@
 const mongoose = require('mongoose');
 
 const tagSchema = mongoose.Schema({
-    title:String,
+    title: String,
     color: String,
     form: String,
 });
 
 const contactedTimesCounterSchema = mongoose.Schema({
-    phoneCounter:Number,
+    phoneCounter: Number,
     smsCounter: Number,
     emailCounter: Number,
 });
 
 const contactSchema = mongoose.Schema({
-    name:String,
+    name: String,
     firstName: String,
     emailPro: String,
     emailPerso: String,
-    phonePerso:String,
+    phonePerso: String,
     phonePro: String,
     birthday: String,
     tags: [tagSchema],
@@ -25,11 +25,11 @@ const contactSchema = mongoose.Schema({
 });
 
 const userSchema = mongoose.Schema({
-    name:String,
+    name: String,
     firstName: String,
     emailPro: String,
     emailPerso: String,
-    phonePerso:String,
+    phonePerso: String,
     phonePro: String,
     birthday: String,
     tagsPerso: [tagSchema],
