@@ -9,6 +9,7 @@ const bcrypt = require("bcrypt");
 
 /*route pour créer le doc d'un user en DB*/
 router.post("/create", (req, res) => {
+  console.log("start");
   User.findOne({ emailMain: req.body.emailMain }).then((data) => {
     if (data === null) {
       const hash = bcrypt.hashSync(req.body.password, 10);
