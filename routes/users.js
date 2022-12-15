@@ -15,14 +15,14 @@ router.post("/create", (req, res) => {
       const hash = bcrypt.hashSync(req.body.password, 10);
 
       const newUser = new User({
-        name: "",
+        lastName: "",
         firstName: "",
         emailMain: req.body.emailMain,
         password: hash,
         token: uid2(32),
         emails: [],
         phones: [],
-        birthday: null,
+        dob: "",
         tagsPerso: [],
         contacts: [],
       });
