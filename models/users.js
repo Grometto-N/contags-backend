@@ -43,6 +43,8 @@ const userSchema = mongoose.Schema({
     emailMain : String,
     emails : [emailSchema],
     phones:[phoneSchema],
+    password : String,
+    token : String,
     birthday: String,
     tagsPerso: [tagSchema],
     contacts: [contactSchema]
