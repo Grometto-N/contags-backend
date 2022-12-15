@@ -47,14 +47,14 @@ router.post("/create", (req, res) => {
       const hash = bcrypt.hashSync(req.body.password, 10);
 
       const newUser = new User({
-        name: "",
+        lastName: "",
         firstName: "",
         emailMain: req.body.emailMain,
         password: hash,
         token: uid2(32),
         emails: [],
         phones: [],
-        birthday: null,
+        dob: "",
         tagsPerso: [],
         contacts: [],
       });
@@ -68,5 +68,22 @@ router.post("/create", (req, res) => {
     }
   });
 });
+
+// Route pour envoyer les inputs utilisateur (prénom, nom, téléphone et ddn) en BDD
+
+router.post("/completeProfile", (req, res) => {
+  console.log(req.body)
+  const filter = {token: req.body.token};
+  const update = {firstName: req.body.firstName, lastName: req.body.lastName, dob: req.body.dob}
+
+  User.findOneAndUpdate( filter, update ).then(data => {
+    if (data) {   
+      console.log(data)
+      res.json({ result: true })
+    } else {
+      res.json({ result: false, error: "Completion impossible"})
+    }
+  })
+})
 
 module.exports = router;
