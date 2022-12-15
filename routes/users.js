@@ -7,9 +7,41 @@ const { checkBody } = require("../modules/checkBody");
 const uid2 = require("uid2");
 const bcrypt = require("bcrypt");
 
+
+/* GET users listing. */
+router.get("/", function (req, res, next) {
+  User.find({}).then((data) => res.json({ result: true, data }));
+});
+
+//j'enregistre un nouveau contact
+router.post("/addAllContact", (req, res) => {
+  console.log(req.body.contacts)
+ User.updateOne(
+    { token: "t320Oc5FBgBjccN3hoqA334j7sT5XO5I" },
+    {
+      $set: {
+        contacts: req.body.contacts
+      },
+    }
+  ).then((contacts) => {
+    /* console.log(
+      `✅ Modified contact document(s) ...`
+    ); */
+    User.findOne({ token: "t320Oc5FBgBjccN3hoqA334j7sT5XO5I" }).then(
+      (contacts) => {
+        console.log(
+          "✅ Contact added with sucess"
+        );
+        //console.log("🔎", contacts.firstName);
+      }
+      
+    );
+    
+  });
+});
+
 /*route pour créer le doc d'un user en DB*/
 router.post("/create", (req, res) => {
-  console.log("start");
   User.findOne({ emailMain: req.body.emailMain }).then((data) => {
     if (data === null) {
       const hash = bcrypt.hashSync(req.body.password, 10);
@@ -32,9 +64,26 @@ router.post("/create", (req, res) => {
         res.json({ result: true, token: newDoc.token });
       });
     } else {
-      res.json({ result: false, error: "User already exists" });
+      res.json({ result: false, error: "T'as une erreur mon grand !" });
     }
   });
 });
+
+// Route pour envoyer les inputs utilisateur (prénom, nom, téléphone et ddn) en BDD
+
+router.post("/completeProfile", (req, res) => {
+  console.log(req.body)
+  const filter = {token: req.body.token};
+  const update = {firstName: req.body.firstName, lastName: req.body.lastName, dob: req.body.dob}
+
+  User.findOneAndUpdate( filter, update ).then(data => {
+    if (data) {   
+      console.log(data)
+      res.json({ result: true })
+    } else {
+      res.json({ result: false, error: "Completion impossible"})
+    }
+  })
+})
 
 module.exports = router;
