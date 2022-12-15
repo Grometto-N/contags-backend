@@ -13,12 +13,12 @@ const contactedTimesCounterSchema = mongoose.Schema({
 });
 
 const emailSchema = mongoose.Schema({
-  type: String,
+  emailType: String,
   email: String,
 });
 
 const phoneSchema = mongoose.Schema({
-  type: String,
+  phoneType: String,
   number: String,
   country: String,
   areaCode: String,
@@ -45,7 +45,9 @@ const userSchema = mongoose.Schema({
   dob: String,
   tagsPerso: [tagSchema],
   contacts: [contactSchema],
-});
+}
+
+);
 
 const User = mongoose.model("users", userSchema);
 
