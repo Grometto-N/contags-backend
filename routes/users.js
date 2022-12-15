@@ -7,33 +7,41 @@ const { checkBody } = require("../modules/checkBody");
 const uid2 = require("uid2");
 const bcrypt = require("bcrypt");
 
+
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  User.find({})
-  .then(data => res.json({result : true, data}))
+router.get("/", function (req, res, next) {
+  User.find({}).then((data) => res.json({ result: true, data }));
 });
 
 //j'enregistre un nouveau contact
-/* router.post("/addContact", (req, res) => {
-
-  User.findOne({ token: req.body.token }).then((data) => {
-    if (data === null) {
-     
-      let Contacts = []
-      const newContact = new Contacts({
-        name: req.body.name,
-        firstName: req.body.firstName,
-        emailPro: req.body.emailPro,
-        emailPerso: req.body.emailPerso,
-        phonePerso: req.body.phonePerso,
-        phonePro: req.body.phonePro,
-        birthday: req.body.birthday,
-      }); */
-
+router.post("/addAllContact", (req, res) => {
+  console.log(req.body.contacts)
+ User.updateOne(
+    { token: "t320Oc5FBgBjccN3hoqA334j7sT5XO5I" },
+    {
+      $set: {
+        contacts: req.body.contacts
+      },
+    }
+  ).then((contacts) => {
+    /* console.log(
+      `✅ Modified contact document(s) ...`
+    ); */
+    User.findOne({ token: "t320Oc5FBgBjccN3hoqA334j7sT5XO5I" }).then(
+      (contacts) => {
+        console.log(
+          "✅ Contact added with sucess"
+        );
+        //console.log("🔎", contacts.firstName);
+      }
+      
+    );
+    
+  });
+});
 
 /*route pour créer le doc d'un user en DB*/
 router.post("/create", (req, res) => {
-  console.log("start");
   User.findOne({ emailMain: req.body.emailMain }).then((data) => {
     if (data === null) {
       const hash = bcrypt.hashSync(req.body.password, 10);
@@ -59,6 +67,6 @@ router.post("/create", (req, res) => {
       res.json({ result: false, error: "T'as une erreur mon grand !" });
     }
   });
-}); 
+});
 
 module.exports = router;
