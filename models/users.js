@@ -25,7 +25,7 @@ const phoneSchema = mongoose.Schema({
 });
 
 const contactSchema = mongoose.Schema({
-  name: String,
+  lastName: String,
   firstName: String,
   emails: [emailSchema],
   phones: [phoneSchema],
@@ -35,7 +35,7 @@ const contactSchema = mongoose.Schema({
 });
 
 const userSchema = mongoose.Schema({
-  name: String,
+  lastName: String,
   firstName: String,
   emailMain: String,
   emails: [emailSchema],

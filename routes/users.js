@@ -7,6 +7,22 @@ const { checkBody } = require("../modules/checkBody");
 const uid2 = require("uid2");
 const bcrypt = require("bcrypt");
 
+/*Modifier un user de la db*/
+router.put("/modif/:id", function (req, res) {
+  User.findById(req.query("639c866abd38300add50da2c"), function (err, modif) {
+    modif.lastName = req.body.contacts;
+    modif.firstName = req.body.contacts;
+    modif.emailPro = req.body.contacts;
+    modif.save(function (err) {
+      if (err) {
+        console.log("err", err);
+      }
+      res.status(200).json("ok");
+      console.log("bdd upadate");
+    });
+  });
+});
+
 /*route pour créer le doc d'un user en DB*/
 router.post("/create", (req, res) => {
   console.log("start");
