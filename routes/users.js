@@ -53,4 +53,14 @@ router.post("/create", (req, res) => {
   });
 });
 
+router.post("/signin", (req, res) => {
+  User.findOne({ emailMain: req.body.emailMain }).then((data) => {
+    if (data && bcrypt.compareSync(req.body.password, data.password)) {
+      res.json({ result: true, token: data.token });
+    } else {
+      res.json({ result: false, error: "User not found or wrong password" });
+    }
+  });
+});
+
 module.exports = router;
