@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const tagSchema = mongoose.Schema({
   title: String,
   color: String,
-  form: String,
+  border: String,
 });
 
 const contactedTimesCounterSchema = mongoose.Schema({
@@ -13,12 +13,12 @@ const contactedTimesCounterSchema = mongoose.Schema({
 });
 
 const emailSchema = mongoose.Schema({
-  type: String,
+  emailType: String,
   email: String,
 });
 
 const phoneSchema = mongoose.Schema({
-  type: String,
+  phoneType: String,
   number: String,
   country: String,
   areaCode: String,
@@ -29,7 +29,7 @@ const contactSchema = mongoose.Schema({
   firstName: String,
   emails: [emailSchema],
   phones: [phoneSchema],
-  birthday: String,
+  dob: String,
   tags: [tagSchema],
   contactedTimesCounter: [contactedTimesCounterSchema],
 });
@@ -42,10 +42,12 @@ const userSchema = mongoose.Schema({
   phones: [phoneSchema],
   password: String,
   token: String,
-  birthday: String,
+  dob: String,
   tagsPerso: [tagSchema],
   contacts: [contactSchema],
-});
+}
+
+);
 
 const User = mongoose.model("users", userSchema);
 

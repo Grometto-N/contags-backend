@@ -7,38 +7,49 @@ const { checkBody } = require("../modules/checkBody");
 const uid2 = require("uid2");
 const bcrypt = require("bcrypt");
 
-/*Modifier un user de la db*/
-router.put("/modif/:id", function (req, res) {
-  User.findById(req.query("639c866abd38300add50da2c"), function (err, modif) {
-    modif.lastName = req.body.contacts;
-    modif.firstName = req.body.contacts;
-    modif.emailPro = req.body.contacts;
-    modif.save(function (err) {
-      if (err) {
-        console.log("err", err);
+/* GET users listing. */
+router.get("/", function (req, res, next) {
+  User.find({}).then((data) => res.json({ result: true, data }));
+});
+
+//j'enregistre un nouveau contact
+router.post("/addAllContact", (req, res) => {
+  console.log(req.body.contacts);
+  User.updateOne(
+    { token: "t320Oc5FBgBjccN3hoqA334j7sT5XO5I" },
+    {
+      $set: {
+        contacts: req.body.contacts,
+      },
+    }
+  ).then((contacts) => {
+    /* console.log(
+      `✅ Modified contact document(s) ...`
+    ); */
+    User.findOne({ token: "t320Oc5FBgBjccN3hoqA334j7sT5XO5I" }).then(
+      (contacts) => {
+        console.log("✅ Contact added with sucess");
+        //console.log("🔎", contacts.firstName);
       }
-      res.status(200).json("ok");
-      console.log("bdd upadate");
-    });
+    );
   });
 });
 
 /*route pour créer le doc d'un user en DB*/
 router.post("/create", (req, res) => {
-  console.log("start");
   User.findOne({ emailMain: req.body.emailMain }).then((data) => {
     if (data === null) {
       const hash = bcrypt.hashSync(req.body.password, 10);
 
       const newUser = new User({
-        name: "",
+        lastName: "",
         firstName: "",
         emailMain: req.body.emailMain,
         password: hash,
         token: uid2(32),
         emails: [],
         phones: [],
-        birthday: null,
+        dob: "",
         tagsPerso: [],
         contacts: [],
       });
@@ -48,7 +59,7 @@ router.post("/create", (req, res) => {
         res.json({ result: true, token: newDoc.token });
       });
     } else {
-      res.json({ result: false, error: "User already exists" });
+      res.json({ result: false, error: "T'as une erreur mon grand !" });
     }
   });
 });
@@ -59,6 +70,46 @@ router.post("/signin", (req, res) => {
       res.json({ result: true, token: data.token });
     } else {
       res.json({ result: false, error: "User not found or wrong password" });
+    }
+  });
+});
+// Route pour envoyer les inputs utilisateur (prénom, nom, téléphone et ddn) en BDD
+
+router.post("/completeProfile", (req, res) => {
+  console.log(req.body);
+  const filter = { token: req.body.token };
+  const update = {
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    dob: req.body.dob,
+  };
+
+  User.findOneAndUpdate(filter, update).then((data) => {
+    if (data) {
+      console.log(data);
+      res.json({ result: true });
+    } else {
+      res.json({ result: false, error: "Completion impossible" });
+    }
+  });
+});
+
+// route permettant d'enregistrer les tags perso du user
+router.post("/saveTagsPerso", (req, res) => {
+  console.log(req.body);
+
+  User.findOneAndUpdate(
+    { token: req.body.token },
+    {
+      $set: {
+        tagsPerso: req.body.tagsPerso,
+      },
+    }
+  ).then((data) => {
+    if (data) {
+      res.json({ result: true, data: data });
+    } else {
+      res.json({ result: false, error: "Completion impossible" });
     }
   });
 });
