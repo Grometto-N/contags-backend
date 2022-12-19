@@ -86,4 +86,24 @@ router.post("/completeProfile", (req, res) => {
   })
 })
 
+
+// route permettant d'enregistrer les tags perso du user
+router.post("/saveTagsPerso", (req, res) => {
+ console.log(req.body)
+
+  User.findOneAndUpdate({token: req.body.token} , 
+  { 
+    "$set": {
+        "tagsPerso": req.body.tagsPerso
+    }
+}
+ ).then(data => {
+    if (data) {   
+      res.json({ result: true, data : data })
+    } else {
+      res.json({ result: false, error: "Completion impossible"})
+    }
+  })
+})
+
 module.exports = router;
