@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const tagSchema = mongoose.Schema({
   title: String,
   color: String,
-  form: String,
+  border: String,
 });
 
 const contactedTimesCounterSchema = mongoose.Schema({
