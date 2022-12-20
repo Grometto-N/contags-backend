@@ -74,12 +74,12 @@ router.post("/create", (req, res) => {
 router.post("/completeProfile", (req, res) => {
   console.log(req.body)
   const filter = {token: req.body.token};
-  const update = {firstName: req.body.firstName, lastName: req.body.lastName, dob: req.body.dob}
+  const update = {firstName: req.body.firstName, lastName: req.body.lastName, dob: req.body.dob, phones: req.body.phones}
 
   User.findOneAndUpdate( filter, update ).then(data => {
     if (data) {   
       console.log(data)
-      res.json({ result: true })
+      res.json({ result: true})
     } else {
       res.json({ result: false, error: "Completion impossible"})
     }
