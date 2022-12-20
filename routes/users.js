@@ -7,7 +7,6 @@ const { checkBody } = require("../modules/checkBody");
 const uid2 = require("uid2");
 const bcrypt = require("bcrypt");
 
-
 /* GET users listing. */
 router.get("/", function (req, res, next) {
   User.find({}).then((data) => res.json({ result: true, data }));
@@ -15,28 +14,29 @@ router.get("/", function (req, res, next) {
 
 //j'enregistre un nouveau contact
 router.post("/addAllContact", (req, res) => {
-  console.log(req.body.contacts)
+//console.log(req.body.contacts)
+  //console.log(req.body.contacts.emails)
  User.updateOne(
     { token: "t320Oc5FBgBjccN3hoqA334j7sT5XO5I" },
     {
       $set: {
-        contacts: req.body.contacts
+        contacts: req.body.contacts,
       },
     }
   ).then((contacts) => {
+
     /* console.log(
       `✅ Modified contact document(s) ...`
     ); */
     User.findOne({ token: "t320Oc5FBgBjccN3hoqA334j7sT5XO5I" }).then(
       (contacts) => {
+        res.json({ result: true});
         console.log(
           "✅ Contact added with sucess"
         );
         //console.log("🔎", contacts.firstName);
       }
-      
     );
-    
   });
 });
 
@@ -60,7 +60,7 @@ router.post("/create", (req, res) => {
       });
 
       newUser.save().then((newDoc) => {
-        console.log("data : ", newDoc);
+        //console.log("data : ", newDoc);
         res.json({ result: true, token: newDoc.token });
       });
     } else {
@@ -69,9 +69,19 @@ router.post("/create", (req, res) => {
   });
 });
 
+router.post("/signin", (req, res) => {
+  User.findOne({ emailMain: req.body.emailMain }).then((data) => {
+    if (data && bcrypt.compareSync(req.body.password, data.password)) {
+      res.json({ result: true, token: data.token });
+    } else {
+      res.json({ result: false, error: "User not found or wrong password" });
+    }
+  });
+});
 // Route pour envoyer les inputs utilisateur (prénom, nom, téléphone et ddn) en BDD
 
 router.post("/completeProfile", (req, res) => {
+<<<<<<< HEAD
   console.log(req.body)
   const filter = {token: req.body.token};
   const update = {firstName: req.body.firstName, lastName: req.body.lastName, dob: req.body.dob, phones: req.body.phones}
@@ -80,10 +90,70 @@ router.post("/completeProfile", (req, res) => {
     if (data) {   
       console.log(data)
       res.json({ result: true})
+=======
+  console.log(req.body);
+  const filter = { token: req.body.token };
+  const update = {
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    dob: req.body.dob,
+  };
+
+  User.findOneAndUpdate(filter, update).then((data) => {
+    if (data) {
+      console.log(data);
+      res.json({ result: true });
+    } else {
+      res.json({ result: false, error: "Completion impossible" });
+    }
+  });
+});
+
+// route permettant d'enregistrer les tags perso du user
+router.post("/saveTagsPerso", (req, res) => {
+  console.log(req.body);
+
+  User.findOneAndUpdate(
+    { token: req.body.token },
+    {
+      $set: {
+        tagsPerso: req.body.tagsPerso,
+      },
+    }
+  ).then((data) => {
+    if (data) {
+      res.json({ result: true, data: data });
+    } else {
+      res.json({ result: false, error: "Completion impossible" });
+    }
+  });
+});
+
+// Route pour modifier les éléments du réducer et envoyer la modification 
+
+router.post("/updateContact", (req, res) => {
+  
+  const data = req.body;
+
+  // Mise à jour de l'état du réducer en utilisant les données reçues
+  reducer.setState({
+    ...reducer.getState(),
+    data
+  });
+
+  // Envoi d'une réponse à l'utilisateur
+  res.send('Éléments mis à jour avec succès!');
+
+  User.findOneAndUpdate( filter, update ).then(data => {
+    if (data) {   
+      //console.log(data)
+      res.json({ result: true })
+>>>>>>> c79dc198b9429864e63499a04b4ae6c968f01e99
     } else {
       res.json({ result: false, error: "Completion impossible"})
     }
   })
 })
+
 
 module.exports = router;
