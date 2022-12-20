@@ -15,7 +15,8 @@ router.get("/", function (req, res, next) {
 
 //j'enregistre un nouveau contact
 router.post("/addAllContact", (req, res) => {
-  console.log(req.body.contacts)
+//console.log(req.body.contacts)
+  //console.log(req.body.contacts.emails)
  User.updateOne(
     { token: "t320Oc5FBgBjccN3hoqA334j7sT5XO5I" },
     {
@@ -24,11 +25,13 @@ router.post("/addAllContact", (req, res) => {
       },
     }
   ).then((contacts) => {
+
     /* console.log(
       `✅ Modified contact document(s) ...`
     ); */
     User.findOne({ token: "t320Oc5FBgBjccN3hoqA334j7sT5XO5I" }).then(
       (contacts) => {
+        res.json({ result: true});
         console.log(
           "✅ Contact added with sucess"
         );
@@ -60,7 +63,7 @@ router.post("/create", (req, res) => {
       });
 
       newUser.save().then((newDoc) => {
-        console.log("data : ", newDoc);
+        //console.log("data : ", newDoc);
         res.json({ result: true, token: newDoc.token });
       });
     } else {
@@ -72,18 +75,44 @@ router.post("/create", (req, res) => {
 // Route pour envoyer les inputs utilisateur (prénom, nom, téléphone et ddn) en BDD
 
 router.post("/completeProfile", (req, res) => {
-  console.log(req.body)
+  //console.log(req.body)
   const filter = {token: req.body.token};
   const update = {firstName: req.body.firstName, lastName: req.body.lastName, dob: req.body.dob}
 
   User.findOneAndUpdate( filter, update ).then(data => {
     if (data) {   
-      console.log(data)
+      //console.log(data)
       res.json({ result: true })
     } else {
       res.json({ result: false, error: "Completion impossible"})
     }
   })
 })
+
+// Route pour modifier les éléments du réducer et envoyer la modification 
+
+router.post("/updateContact", (req, res) => {
+  
+  const data = req.body;
+
+  // Mise à jour de l'état du réducer en utilisant les données reçues
+  reducer.setState({
+    ...reducer.getState(),
+    data
+  });
+
+  // Envoi d'une réponse à l'utilisateur
+  res.send('Éléments mis à jour avec succès!');
+
+  User.findOneAndUpdate( filter, update ).then(data => {
+    if (data) {   
+      //console.log(data)
+      res.json({ result: true })
+    } else {
+      res.json({ result: false, error: "Completion impossible"})
+    }
+  })
+})
+
 
 module.exports = router;
