@@ -81,16 +81,6 @@ router.post("/signin", (req, res) => {
 // Route pour envoyer les inputs utilisateur (prénom, nom, téléphone et ddn) en BDD
 
 router.post("/completeProfile", (req, res) => {
-<<<<<<< HEAD
-  console.log(req.body)
-  const filter = {token: req.body.token};
-  const update = {firstName: req.body.firstName, lastName: req.body.lastName, dob: req.body.dob, phones: req.body.phones}
-
-  User.findOneAndUpdate( filter, update ).then(data => {
-    if (data) {   
-      console.log(data)
-      res.json({ result: true})
-=======
   console.log(req.body);
   const filter = { token: req.body.token };
   const update = {
@@ -148,7 +138,6 @@ router.post("/updateContact", (req, res) => {
     if (data) {   
       //console.log(data)
       res.json({ result: true })
->>>>>>> c79dc198b9429864e63499a04b4ae6c968f01e99
     } else {
       res.json({ result: false, error: "Completion impossible"})
     }
