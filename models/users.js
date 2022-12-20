@@ -15,7 +15,7 @@ const contactedTimesCounterSchema = mongoose.Schema({
 const emailSchema = mongoose.Schema({
   emailType: String,
   email: String,
-});
+}); 
 
 const phoneSchema = mongoose.Schema({
   phoneType: String,
