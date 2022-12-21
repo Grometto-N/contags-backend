@@ -15,29 +15,22 @@ router.get("/", function (req, res, next) {
 
 //j'enregistre un nouveau contact
 router.post("/addAllContact", (req, res) => {
-//console.log(req.body.contacts)
-  //console.log(req.body.contacts.emails)
- User.updateOne(
-    { token: "pw0aeY_jubIXlYijDXI-47ICxhbwup5f" },
+  console.log("route");
+  User.updateOne(
+    { token: req.body.token },
     {
       $set: {
         contacts: req.body.contacts,
       },
     }
   ).then((contacts) => {
-
     /* console.log(
       `✅ Modified contact document(s) ...`
     ); */
-    User.findOne({ token: "pw0aeY_jubIXlYijDXI-47ICxhbwup5f" }).then(
-      (contacts) => {
-        res.json({ result: true});
-        console.log(
-          "✅ Contact added with sucess"
-        );
-        //console.log("🔎", contacts.firstName);
-      }
-    );
+    User.findOne({ token: req.body.token }).then((contacts) => {
+      res.json({ result: true });
+      console.log("✅ Contact added with sucess");
+    });
   });
 });
 
@@ -120,27 +113,26 @@ router.post("/saveTagsPerso", (req, res) => {
   });
 });
 
-// Route pour modifier les éléments du réducer et envoyer la modification 
+// Route pour modifier les éléments du réducer et envoyer la modification
 
 router.post("/updateContact", (req, res) => {
-  
   const data = req.body;
 
   // Mise à jour de l'état du réducer en utilisant les données reçues
   reducer.setState({
     ...reducer.getState(),
-    data
+    data,
   });
 
   // Envoi d'une réponse à l'utilisateur
-  res.send('Éléments mis à jour avec succès!');
+  res.send("Éléments mis à jour avec succès!");
 
-  User.findOneAndUpdate( filter, update ).then(data => {
-    if (data) {   
+  User.findOneAndUpdate(filter, update).then((data) => {
+    if (data) {
       //console.log(data)
-      res.json({ result: true })
+      res.json({ result: true });
     } else {
-      res.json({ result: false, error: "Completion impossible"})
+      res.json({ result: false, error: "Completion impossible" });
     }
   })
 })
