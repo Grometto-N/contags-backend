@@ -6,6 +6,7 @@ const User = require("../models/users");
 const { checkBody } = require("../modules/checkBody");
 const uid2 = require("uid2");
 const bcrypt = require("bcrypt");
+//const { default: contacts } = require("../../contags-frontend/reducers/contacts");
 
 /* GET users listing. */
 router.get("/", function (req, res, next) {
@@ -17,7 +18,7 @@ router.post("/addAllContact", (req, res) => {
 //console.log(req.body.contacts)
   //console.log(req.body.contacts.emails)
  User.updateOne(
-    { token: "t320Oc5FBgBjccN3hoqA334j7sT5XO5I" },
+    { token: "pw0aeY_jubIXlYijDXI-47ICxhbwup5f" },
     {
       $set: {
         contacts: req.body.contacts,
@@ -28,7 +29,7 @@ router.post("/addAllContact", (req, res) => {
     /* console.log(
       `✅ Modified contact document(s) ...`
     ); */
-    User.findOne({ token: "t320Oc5FBgBjccN3hoqA334j7sT5XO5I" }).then(
+    User.findOne({ token: "pw0aeY_jubIXlYijDXI-47ICxhbwup5f" }).then(
       (contacts) => {
         res.json({ result: true});
         console.log(
@@ -143,6 +144,34 @@ router.post("/updateContact", (req, res) => {
     }
   })
 })
+
+/*route pour créer un nouveau contact*/
+router.post("/createContact", (req, res) => {
+   User.updateOne(
+      //console.log("Je suis dans la route users", req.body.contacts),
+      { token: "pw0aeY_jubIXlYijDXI-47ICxhbwup5f" },
+      {
+        $set: {
+          contacts: req.body.contacts,
+        },
+      }
+    ).then((contacts) => {
+  
+      /* console.log(
+        `✅ Modified contact document(s) ...`
+      ); */
+      User.findOne({ token: "pw0aeY_jubIXlYijDXI-47ICxhbwup5f" }).then(
+        (contacts) => {
+          res.json({ result: true});
+          console.log(
+            "✅ Contact added with sucess"
+          );
+          //console.log("🔎", contacts.firstName);
+        }
+      );
+    });
+  });
+
 
 
 module.exports = router;
