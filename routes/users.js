@@ -15,9 +15,9 @@ router.get("/", function (req, res, next) {
 
 //j'enregistre un nouveau contact
 router.post("/addAllContact", (req, res) => {
-  console.log(req.body.contacts)
+  
  User.updateOne(
-    { token: "t320Oc5FBgBjccN3hoqA334j7sT5XO5I" },
+    { token: req.body.token },
     {
       $set: {
         contacts: req.body.contacts
@@ -27,8 +27,9 @@ router.post("/addAllContact", (req, res) => {
     /* console.log(
       `✅ Modified contact document(s) ...`
     ); */
-    User.findOne({ token: "t320Oc5FBgBjccN3hoqA334j7sT5XO5I" }).then(
+    User.findOne({ token: req.body.token }).then(
       (contacts) => {
+        res.json({ result: true});
         console.log(
           "✅ Contact added with sucess"
         );
@@ -60,7 +61,6 @@ router.post("/create", (req, res) => {
       });
 
       newUser.save().then((newDoc) => {
-        console.log("data : ", newDoc);
         res.json({ result: true, token: newDoc.token });
       });
     } else {
@@ -105,5 +105,42 @@ router.post("/saveTagsPerso", (req, res) => {
     }
   })
 })
+
+// route permettant d'enregistrer les tags perso du user
+router.post("/updateContact", (req, res) => {
+  console.log('req.body',req.body)
+  User.findOne({lastName: req.body.lastName}, { contacts: 
+    { $elemMatch : 
+       { 
+         lastName: req.body.test ,
+         firstName : req.body.firstName
+       } 
+    }}  ).then(data => {
+    console.log(data)
+         if (data) {  
+          User.findOne({lastName: req.body.lastName, 'contacts.id': data.contacts.id}
+         ).then( 
+            dataContact => {res.json({ result: true, data : dataContact}) }
+          )
+           
+         } else {
+           res.json({ result: false, error: "Completion impossible"})
+         }
+       })
+ 
+//    User.findOneAndUpdate({token: req.body.token, contacts.firstName : req.body.contact.firstName} , 
+//    { 
+//      "$set": {
+//          "tagsPerso": req.body.tagsPerso
+//      }
+//  }
+//   ).then(data => {
+//      if (data) {   
+//        res.json({ result: true, data : data })
+//      } else {
+//        res.json({ result: false, error: "Completion impossible"})
+//      }
+//    })
+ })
 
 module.exports = router;
