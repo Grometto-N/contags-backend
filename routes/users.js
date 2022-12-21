@@ -7,7 +7,6 @@ const { checkBody } = require("../modules/checkBody");
 const uid2 = require("uid2");
 const bcrypt = require("bcrypt");
 
-
 /* GET users listing. */
 router.get("/", function (req, res, next) {
   User.find({}).then((data) => res.json({ result: true, data }));
@@ -20,7 +19,7 @@ router.post("/addAllContact", (req, res) => {
     { token: req.body.token },
     {
       $set: {
-        contacts: req.body.contacts
+        contacts: req.body.contacts,
       },
     }
   ).then((contacts) => {
@@ -69,42 +68,79 @@ router.post("/create", (req, res) => {
   });
 });
 
+router.post("/signin", (req, res) => {
+  User.findOne({ emailMain: req.body.emailMain }).then((data) => {
+    if (data && bcrypt.compareSync(req.body.password, data.password)) {
+      res.json({ result: true, token: data.token });
+    } else {
+      res.json({ result: false, error: "User not found or wrong password" });
+    }
+  });
+});
 // Route pour envoyer les inputs utilisateur (prénom, nom, téléphone et ddn) en BDD
 
 router.post("/completeProfile", (req, res) => {
-  console.log(req.body)
-  const filter = {token: req.body.token};
-  const update = {firstName: req.body.firstName, lastName: req.body.lastName, dob: req.body.dob}
+  console.log(req.body);
+  const filter = { token: req.body.token };
+  const update = {
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    dob: req.body.dob,
+  };
 
-  User.findOneAndUpdate( filter, update ).then(data => {
-    if (data) {   
-      console.log(data)
-      res.json({ result: true })
+  User.findOneAndUpdate(filter, update).then((data) => {
+    if (data) {
+      console.log(data);
+      res.json({ result: true });
     } else {
-      res.json({ result: false, error: "Completion impossible"})
+      res.json({ result: false, error: "Completion impossible" });
     }
-  })
-})
-
+  });
+});
 
 // route permettant d'enregistrer les tags perso du user
 router.post("/saveTagsPerso", (req, res) => {
- console.log(req.body)
+  console.log(req.body);
 
-  User.findOneAndUpdate({token: req.body.token} , 
-  { 
-    "$set": {
-        "tagsPerso": req.body.tagsPerso
+  User.findOneAndUpdate(
+    { token: req.body.token },
+    {
+      $set: {
+        tagsPerso: req.body.tagsPerso,
+      },
     }
-}
- ).then(data => {
-    if (data) {   
-      res.json({ result: true, data : data })
+  ).then((data) => {
+    if (data) {
+      res.json({ result: true, data: data });
     } else {
-      res.json({ result: false, error: "Completion impossible"})
+      res.json({ result: false, error: "Completion impossible" });
     }
-  })
-})
+  });
+});
+
+// Route pour modifier les éléments du réducer et envoyer la modification
+
+router.post("/updateContact", (req, res) => {
+  const data = req.body;
+
+  // Mise à jour de l'état du réducer en utilisant les données reçues
+  reducer.setState({
+    ...reducer.getState(),
+    data,
+  });
+
+  // Envoi d'une réponse à l'utilisateur
+  res.send("Éléments mis à jour avec succès!");
+
+  User.findOneAndUpdate(filter, update).then((data) => {
+    if (data) {
+      //console.log(data)
+      res.json({ result: true });
+    } else {
+      res.json({ result: false, error: "Completion impossible" });
+    }
+  });
+});
 
 // route permettant d'enregistrer les tags perso du user
 router.post("/updateContact", (req, res) => {
