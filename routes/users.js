@@ -145,29 +145,30 @@ router.post("/updateContact", (req, res) => {
 
 /*route pour créer un nouveau contact*/
 router.post("/createContact", (req, res) => {
-   User.updateOne(
-      //console.log("Je suis dans la route users", req.body.contacts),
-      { token: "pw0aeY_jubIXlYijDXI-47ICxhbwup5f" },
-      {
-        $set: {
-          contacts: req.body.contacts,
-        },
-      }
-    ).then((contacts) => {
+  console.log("route", req.body)
+  User.updateOne(
+       //console.log("Je suis dans la route users", req.body.contacts),
+       { token: req.body.token },
+       {
+         $push: {
+           contacts: req.body.contacts,
+       },
+     }
+     ).then((contacts) => {
   
-      /* console.log(
-        `✅ Modified contact document(s) ...`
-      ); */
-      User.findOne({ token: "pw0aeY_jubIXlYijDXI-47ICxhbwup5f" }).then(
-        (contacts) => {
-          res.json({ result: true});
-          console.log(
-            "✅ Contact added with sucess"
-          );
-          //console.log("🔎", contacts.firstName);
-        }
-      );
-    });
+       /* console.log(
+         `✅ Modified contact document(s) ...`
+       ); */
+       User.findOne({ token: req.body.token }).then(
+         (contacts) => {
+           res.json({ result: true});
+           console.log(
+             "✅ Contact added with sucess"
+           );
+           //console.log("🔎", contacts.firstName);
+         }
+       );
+     });
   });
 
 
