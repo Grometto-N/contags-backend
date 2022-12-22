@@ -10,7 +10,7 @@ const bcrypt = require("bcrypt");
 
 /* GET users listing. */
 router.get("/", function (req, res, next) {
-  User.find({}).then((data) => res.json({ result: true, data }));
+  User.find({}).then((data) => res.json({ result: true, users: data }));
 });
 
 //j'enregistre un nouveau contact
@@ -163,6 +163,7 @@ router.post("/createContact", (req, res) => {
       );
     });
   });
+
 
 
 
