@@ -109,29 +109,6 @@ router.post("/saveTagsPerso", (req, res) => {
   });
 });
 
-// Route pour modifier les éléments du réducer et envoyer la modification
-
-// router.post("/updateContact", (req, res) => {
-//   const data = req.body;
-
-//   // Mise à jour de l'état du réducer en utilisant les données reçues
-//   reducer.setState({
-//     ...reducer.getState(),
-//     data,
-//   });
-
-//   // Envoi d'une réponse à l'utilisateur
-//   res.send("Éléments mis à jour avec succès!");
-
-//   User.findOneAndUpdate(filter, update).then((data) => {
-//     if (data) {
-//       //console.log(data)
-//       res.json({ result: true });
-//     } else {
-//       res.json({ result: false, error: "Completion impossible" });
-//     }
-//   });
-// });
 
 /*route pour créer un nouveau contact*/
 router.post("/createContact", (req, res) => {
