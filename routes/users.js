@@ -9,7 +9,7 @@ const bcrypt = require("bcrypt");
 //const { default: contacts } = require("../../contags-frontend/reducers/contacts");
 
 /* GET users listing. */
-router.get("/", function (req, res, next) {
+router.get("/", function (req, res) {
   User.find({}).then((data) => res.json({ result: true, users: data }));
 });
 
