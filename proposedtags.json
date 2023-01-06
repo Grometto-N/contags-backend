@@ -1,14 +1,14 @@
 [{
   "title": "Amis",
-  "color": "#0031B8",
+  "color": "#000",
   "border": "none"
 },{
   "title": "Famille",
-  "color": "#0031B8",
+  "color": "#0046CF",
   "border": "none"
 },{
   "title": "Collègues",
-  "color": "#0031B8",
+  "color": "#0046CF",
   "border": "none"
 },{
   "title": "Foot",
@@ -29,7 +29,7 @@
 },{
   "title": "Lecture",
   "color": "#FFFFFF",
-  "border": "#0031B8"
+  "border": "#0046CF"
 },{
   "title": "Cinéma",
   "color": "#000000",
@@ -72,18 +72,18 @@
   "border": "none"
 },{
   "title": "École",
-  "color": "#0031B8",
+  "color": "#0046CF",
   "border": "none"
 },{
   "title": "Collège",
-  "color": "#0031B8",
+  "color": "#0046CF",
   "border": "none"
 },{
   "title": "Lycée",
-  "color": "#0031B8",
+  "color": "#0046CF",
   "border": "none"
 },{
   "title": "Fac",
-  "color": "#0031B8",
+  "color": "#0046CF",
   "border": "none"
 }]
